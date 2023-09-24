@@ -4,34 +4,30 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import com.example.rdhomeworkl18.ModelViewPresenter.MyView
-import com.example.rdhomeworkl18.ModelViewPresenter.Presenter
-import com.example.rdhomeworkl18.ModelViewPresenter.PresenterImpl
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.rdhomeworkl18.mvvm.MyViewModel
 
-var mainTv: TextView? = null
-val presenter: Presenter = PresenterImpl()
 
-class MainActivity: Activity(), MyView {
+class MainActivity: AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity_layout)
-        mainTv = findViewById(R.id.main_tv)
-
+        val mainTv: TextView = findViewById(R.id.main_tv)
         val btnPlus: Button = findViewById(R.id.plus_btn)
         val btnMinus: Button = findViewById(R.id.minus_btn)
-        presenter.setView(this)
+
+        val viewModel: MyViewModel = ViewModelProvider(this).get(MyViewModel::class.java)
+
+        viewModel.counterLiveData.observe(this){counter ->
+            mainTv.text = counter.toString()
+        }
         btnPlus.setOnClickListener {
-            presenter.plus()
+            viewModel.plus()
         }
         btnMinus.setOnClickListener {
-            presenter.minus()
-
+            viewModel.minus()
         }
-
-    }
-
-    override fun updateCounter(counter: Int) {
-        mainTv?.text = counter.toString()
     }
 }

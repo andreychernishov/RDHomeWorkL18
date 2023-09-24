@@ -1,4 +1,4 @@
-package com.example.rdhomeworkl18.ModelViewPresenter
+package com.example.rdhomeworkl18.mvvm
 
 interface ModelInterface {
     fun getCounter(): Int
